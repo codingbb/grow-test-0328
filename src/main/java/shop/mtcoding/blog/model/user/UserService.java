@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 import shop.mtcoding.blog._core.errors.exception.Exception401;
 import shop.mtcoding.blog._core.errors.exception.Exception404;
 import shop.mtcoding.blog._core.util.ApiUtil;
+import shop.mtcoding.blog.model.apply.Apply;
+import shop.mtcoding.blog.model.jobs.Jobs;
+import shop.mtcoding.blog.model.jobs.JobsJPARepository;
 import shop.mtcoding.blog.model.resume.Resume;
 import shop.mtcoding.blog.model.resume.ResumeJPARepository;
 import shop.mtcoding.blog.model.resume.ResumeRequest;
@@ -25,9 +28,18 @@ public class UserService {
     private final UserJPARepository userRepo;
     private final ResumeJPARepository resumeRepo;
     private final SkillJPARepository skillRepo;
+    private final JobsJPARepository jobsRepo;
+
+    public List<UserResponse.UserJobsSkillDTO> userJobsSkillDTO (Integer userId, Integer resumeId) {
+        //UserResumeSkillDTO 객체를 담을 ArrayList를 생성
+        List<UserResponse.UserJobsSkillDTO> jobsList = new ArrayList<>();
+        List<Jobs> jobsList2 = jobsRepo.findAllByUserId(userId);
+        List<Apply> apply = jobsRepo.findAllByJobsIdAndUserId(resumeId);
+
+    }
 
 
-    public List<UserResponse.UserResumeSkillDTO> UserResumeSkillDTO (Integer userId){
+    public List<UserResponse.UserResumeSkillDTO> userResumeSkillDTO (Integer userId){
         List<UserResponse.UserResumeSkillDTO> ursList = new ArrayList<>();
         List<Resume> resumeList = resumeRepo.findAllByUserId(userId);
         User user = userRepo.findById(userId)

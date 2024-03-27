@@ -2,8 +2,11 @@ package shop.mtcoding.blog.model.user;
 
 import lombok.Builder;
 import lombok.Data;
+import shop.mtcoding.blog.model.apply.Apply;
+import shop.mtcoding.blog.model.jobs.Jobs;
 import shop.mtcoding.blog.model.jobs.JobsResponse;
 import shop.mtcoding.blog.model.resume.Resume;
+import shop.mtcoding.blog.model.resume.ResumeResponse;
 import shop.mtcoding.blog.model.skill.Skill;
 
 import java.util.List;
@@ -11,6 +14,34 @@ import java.util.stream.Collectors;
 
 public class UserResponse {
 
+    //지원내역 중 지원 현황 DTO
+    @Data
+    public static class UserJobsSkillDTO {
+        //user
+        private Integer id;
+        private String compName;
+        //jobs
+        private String jobsTitle;
+        private String jobsCareer;
+        //Apply
+        private String isPass;
+        //skill
+        private List<SkillDTO> skillList;
+
+        @Builder
+        public UserJobsSkillDTO(User user, Jobs jobs, Apply apply, List<Skill> skillList) {
+            this.id = user.getId();
+            this.compName = user.getCompName();
+            this.jobsTitle = jobs.getTitle();
+            this.jobsCareer = jobs.getCareer();
+            this.isPass = apply.getIsPass();
+            this.skillList = skillList.stream().map(skill ->
+                    new SkillDTO(skill)).collect(Collectors.toList());
+        }
+    }
+
+
+    //지원내역 중 이력서 내역 DTO
     @Data
     public static class UserResumeSkillDTO {
         private Integer id;
